@@ -6,7 +6,13 @@ let userMessages = document.querySelector("#message-history");
 
 
 function testFetch() {
-	console.log("Testing ...");
+	fetch('http://localhost:1337/get-message-history')
+	.then( function(response){
+		return response.json();
+	}).then( function(jsonResponse){
+		renderList(jsonResponse)
+	})
+
 }
 
 function renderList(listToRender){
@@ -17,10 +23,19 @@ function renderList(listToRender){
 	userMessages.innerHTML = messageHistoryHTML;
 }
 
-function sendMessage() {
+// function sendMessage() {
+// 	var userMessage = document.getElementById('user-message').value;
+// 	messages.unshift(userMessage);
+// 	console.log("About to send " + userMessage);
+// 	console.log(messages);
+// 	renderList(messages);
+// }
+
+function sendMessage(){
 	var userMessage = document.getElementById('user-message').value;
-	messages.unshift(userMessage);
-	console.log("About to send " + userMessage);
-	console.log(messages);
-	renderList(messages);
+	var myInit = { method: 'GET',
+               cache: 'default' };
+	fetch("http://localhost:1337/send-message?message=" + userMessage, myInit)
 }
+
+// setInterval(testFetch, 3000);
